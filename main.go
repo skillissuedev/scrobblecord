@@ -11,8 +11,16 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("scrobblecord failed!")
+		fmt.Println("pass your Last.fm username as an argument to this program")
+		return
+	}
+
+	user := os.Args[1]
 	apiKey := ""
 	apiSecret := ""
+
 	for _, env := range os.Environ() {
 		name,value,_ := strings.Cut(env, "=")
 		switch name {
@@ -39,7 +47,7 @@ func main() {
 		time.Sleep(time.Second * 2)
 		
 		recentTracksArgs := make(map[string]any)
-		recentTracksArgs["user"] = "skill_issue_dev"
+		recentTracksArgs["user"] = user
 		recentTracksArgs["api_key"] = apiKey
 		recentTracksArgs["limit"] = 1
 		recentTracks, err := lastfmApi.User.GetRecentTracks(recentTracksArgs)
